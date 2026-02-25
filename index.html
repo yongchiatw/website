@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>永佳創新｜精美網路廣告方案</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;700;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --gold-dark: #8B6914;
+    --black: #0A0A0A;
+    --ink: #111118;
+    --cream: #F9F5EE;
+    --muted: #8A8070;
+    --border: rgba(201,168,76,0.25);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--ink);
+    color: var(--cream);
+    font-family: 'DM Sans', 'Noto Serif TC', serif;
+    overflow-x: hidden;
+  }
+
+  /* ── Noise texture overlay ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999;
+    opacity: 0.6;
+  }
+
+  /* ── Navigation ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.4rem 4rem;
+    background: linear-gradient(to bottom, rgba(10,10,10,0.95), transparent);
+    backdrop-filter: blur(4px);
+  }
+
+  .nav-logo {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+  }
+
+  .nav-links {
+    display: flex; gap: 2.5rem; list-style: none;
+    font-size: 0.8rem; letter-spacing: 0.12em; font-weight: 500;
+  }
+
+  .nav-links a {
+    color: var(--cream); text-decoration: none; opacity: 0.7;
+    transition: opacity 0.2s, color 0.2s;
+  }
+  .nav-links a:hover { opacity: 1; color: var(--gold); }
+
+  /* ── Hero ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center;
+    padding: 8rem 2rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 60%, rgba(201,168,76,0.07) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 20% 20%, rgba(201,168,76,0.04) 0%, transparent 60%);
+  }
+
+  /* Decorative lines */
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 700px; height: 700px;
+    border: 1px solid rgba(201,168,76,0.08);
+    border-radius: 50%;
+    animation: pulse-ring 4s ease-in-out infinite;
+  }
+
+  @keyframes pulse-ring {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    50% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.5; }
+  }
+
+  .hero-eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 900;
+    font-size: clamp(3rem, 8vw, 7rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+    font-family: 'Playfair Display', serif;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    color: var(--muted);
+    max-width: 540px;
+    line-height: 1.7;
+    margin-bottom: 3rem;
+    font-weight: 300;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.6s forwards;
+  }
+
+  .hero-cta {
+    display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.8s forwards;
+  }
+
+  .btn-primary {
+    background: var(--gold);
+    color: var(--black);
+    padding: 0.9rem 2.4rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    font-weight: 700;
+    border: none; cursor: pointer;
+    text-decoration: none;
+    transition: background 0.25s, transform 0.2s;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--cream);
+    padding: 0.9rem 2.4rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    font-weight: 500;
+    border: 1px solid rgba(255,255,255,0.2);
+    cursor: pointer; text-decoration: none;
+    transition: border-color 0.25s, color 0.25s;
+  }
+  .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ── Stats band ── */
+  .stats {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    margin: 0;
+  }
+
+  .stat-item {
+    padding: 3rem 2rem;
+    text-align: center;
+    border-right: 1px solid var(--border);
+  }
+  .stat-item:last-child { border-right: none; }
+
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--gold);
+    display: block;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  /* ── Section common ── */
+  section { padding: 7rem 4rem; max-width: 1200px; margin: 0 auto; }
+
+  .section-tag {
+    font-size: 0.65rem; letter-spacing: 0.4em;
+    color: var(--gold); text-transform: uppercase;
+    margin-bottom: 1rem; display: block;
+  }
+
+  .section-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+  }
+
+  /* ── Service plan card ── */
+  .plan-section { max-width: 1200px; }
+
+  .plan-card {
+    border: 1px solid var(--border);
+    padding: 4rem;
+    position: relative;
+    background: linear-gradient(135deg, rgba(201,168,76,0.04) 0%, transparent 60%);
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .plan-card::before {
+    content: '¥';
+    position: absolute; right: -1rem; top: -2rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 18rem;
+    color: rgba(201,168,76,0.04);
+    font-weight: 700;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .plan-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 5rem;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .plan-price span {
+    font-size: 1.2rem;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--muted);
+    font-weight: 300;
+    display: block;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.1em;
+  }
+
+  .plan-exposure {
+    font-size: 1.5rem;
+    margin-top: 1rem;
+    color: var(--cream);
+    font-weight: 300;
+  }
+  .plan-exposure strong { color: var(--gold-light); font-weight: 700; }
+
+  .plan-features {
+    list-style: none;
+    display: flex; flex-direction: column; gap: 1.2rem;
+  }
+
+  .plan-features li {
+    display: flex; align-items: flex-start; gap: 1rem;
+    font-size: 0.95rem; color: rgba(249,245,238,0.8); line-height: 1.5;
+  }
+
+  .plan-features li::before {
+    content: '◆';
+    color: var(--gold);
+    font-size: 0.5rem;
+    flex-shrink: 0;
+    margin-top: 0.45rem;
+  }
+
+  /* ── Platforms grid ── */
+  .platforms {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 4rem;
+  }
+
+  .platform-item {
+    background: var(--ink);
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    transition: background 0.3s;
+    cursor: default;
+  }
+  .platform-item:hover { background: rgba(201,168,76,0.06); }
+
+  .platform-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .platform-name {
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  /* ── Process ── */
+  .process-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin-top: 4rem;
+  }
+
+  .process-step {
+    padding: 2.5rem 2rem;
+    border-left: 1px solid var(--border);
+    position: relative;
+  }
+  .process-step:first-child { border-left: none; }
+
+  .process-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 700;
+    color: rgba(201,168,76,0.15);
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .process-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: var(--gold-light);
+  }
+
+  .process-desc {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* ── CTA section ── */
+  .cta-section {
+    max-width: 100%;
+    padding: 7rem 4rem;
+    text-align: center;
+    position: relative;
+    background: linear-gradient(to bottom, transparent, rgba(201,168,76,0.05), transparent);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cta-section .section-title { font-size: clamp(2rem, 5vw, 4rem); }
+
+  .cta-sub {
+    color: var(--muted); font-size: 1rem;
+    margin-bottom: 2.5rem; font-weight: 300;
+  }
+
+  /* ── Portfolio placeholder ── */
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    margin-top: 4rem;
+  }
+
+  .portfolio-item {
+    background: var(--ink);
+    aspect-ratio: 9/16;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+    transition: background 0.3s;
+  }
+
+  .portfolio-item:hover { background: rgba(201,168,76,0.05); }
+
+  .portfolio-placeholder {
+    text-align: center; color: var(--muted);
+  }
+  .portfolio-placeholder svg { opacity: 0.3; margin-bottom: 0.75rem; display: block; margin: 0 auto 0.75rem; }
+  .portfolio-placeholder span { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; }
+
+  /* ── Footer ── */
+  footer {
+    padding: 3rem 4rem;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1rem;
+  }
+
+  .footer-brand {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 700; font-size: 0.9rem;
+    color: var(--gold); letter-spacing: 0.1em;
+  }
+
+  .footer-copy {
+    font-size: 0.75rem; color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  /* Gold divider */
+  .gold-divider {
+    width: 60px; height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    margin: 2rem auto;
+  }
+
+  /* ── Scroll animations ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 5rem 1.5rem; }
+    .stats { grid-template-columns: 1fr; }
+    .stat-item { border-right: none; border-bottom: 1px solid var(--border); }
+    .plan-card { grid-template-columns: 1fr; gap: 2rem; padding: 2rem; }
+    .platforms { grid-template-columns: repeat(2, 1fr); }
+    .process-grid { grid-template-columns: repeat(2, 1fr); }
+    .portfolio-grid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; text-align: center; }
+    .cta-section { padding: 5rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+  <div class="nav-logo">永佳創新</div>
+  <ul class="nav-links">
+    <li><a href="#plan" onclick="event.preventDefault();document.getElementById('plan').scrollIntoView({behavior:'smooth'})">方案介紹</a></li>
+    <li><a href="#platform" onclick="event.preventDefault();document.getElementById('platform').scrollIntoView({behavior:'smooth'})">投放平台</a></li>
+    <li><a href="#process" onclick="event.preventDefault();document.getElementById('process').scrollIntoView({behavior:'smooth'})">服務流程</a></li>
+    <li><a href="#portfolio" onclick="event.preventDefault();document.getElementById('portfolio').scrollIntoView({behavior:'smooth'})">作品集</a></li>
+    <li><a href="#contact" onclick="event.preventDefault();document.getElementById('contact').scrollIntoView({behavior:'smooth'})">聯絡我們</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <p class="hero-eyebrow">Premium Advertising Plan · 精美網路廣告方案</p>
+  <h1 class="hero-title">
+    讓您的品牌<br>
+    被 <em>百萬人</em> 看見
+  </h1>
+  <p class="hero-subtitle">
+    永佳創新提供高品質廣告影片製作，<br>
+    精準投放於 Google 全系列數位平台，<br>
+    以最大效益為您的品牌帶來曝光。
+  </p>
+  <div class="hero-cta">
+    <a href="#plan" class="btn-primary" onclick="event.preventDefault();document.getElementById('plan').scrollIntoView({behavior:'smooth'})">查看廣告方案</a>
+    <a href="#portfolio" class="btn-secondary" onclick="event.preventDefault();document.getElementById('portfolio').scrollIntoView({behavior:'smooth'})">瀏覽作品集</a>
+  </div>
+</div>
+
+<!-- Stats -->
+<div class="stats" id="plan">
+  <div class="stat-item reveal">
+    <span class="stat-number">10萬</span>
+    <span class="stat-label">保證曝光次數</span>
+  </div>
+  <div class="stat-item reveal">
+    <span class="stat-number">4+</span>
+    <span class="stat-label">Google 投放平台</span>
+  </div>
+  <div class="stat-item reveal">
+    <span class="stat-number">精準</span>
+    <span class="stat-label">受眾目標鎖定</span>
+  </div>
+</div>
+
+<!-- Plan Section -->
+<section class="plan-section">
+  <span class="section-tag reveal">核心方案 · Core Package</span>
+  <h2 class="section-title reveal">精美廣告一次搞定</h2>
+  <div class="gold-divider reveal"></div>
+
+  <div class="plan-card reveal">
+    <div>
+      <div class="plan-price">
+        <span>方案費用</span>
+        NT$100,000
+      </div>
+      <p class="plan-exposure">
+        保證達成 <strong>10 萬次</strong> 真實曝光
+      </p>
+    </div>
+    <ul class="plan-features">
+      <li>由專業團隊根據客戶需求，量身製作高品質廣告影片</li>
+      <li>跨平台投放 YouTube、Gmail、Google 搜尋結果、各大 App</li>
+      <li>精準受眾設定，確保廣告觸及目標潛在客群</li>
+      <li>完整成效報告，透明呈現曝光數據與點擊數據</li>
+      <li>全程專案顧問服務，從創意發想到上線一條龍</li>
+    </ul>
+  </div>
+</section>
+
+<!-- Platforms -->
+<section id="platform">
+  <span class="section-tag reveal">投放管道 · Ad Platforms</span>
+  <h2 class="section-title reveal">覆蓋 Google 全系列平台</h2>
+  <p style="color:var(--muted);font-weight:300;line-height:1.7;" class="reveal">
+    透過 Google 廣告生態系，您的品牌將同步出現在使用者日常接觸的每個數位接觸點。
+  </p>
+  <div class="platforms reveal">
+    <div class="platform-item">
+      <span class="platform-icon">▶</span>
+      <div class="platform-name">YouTube</div>
+    </div>
+    <div class="platform-item">
+      <span class="platform-icon">✉</span>
+      <div class="platform-name">Gmail</div>
+    </div>
+    <div class="platform-item">
+      <span class="platform-icon">🔍</span>
+      <div class="platform-name">Google 搜尋</div>
+    </div>
+    <div class="platform-item">
+      <span class="platform-icon">📱</span>
+      <div class="platform-name">App 廣告</div>
+    </div>
+  </div>
+</section>
+
+<!-- Process -->
+<section id="process">
+  <span class="section-tag reveal">服務流程 · Process</span>
+  <h2 class="section-title reveal">四步驟，輕鬆上線</h2>
+  <div class="process-grid reveal">
+    <div class="process-step">
+      <div class="process-num">01</div>
+      <div class="process-title">需求諮詢</div>
+      <p class="process-desc">與您深入了解品牌定位、目標受眾及廣告目標，制定最適合的策略方向。</p>
+    </div>
+    <div class="process-step">
+      <div class="process-num">02</div>
+      <div class="process-title">創意製作</div>
+      <p class="process-desc">專業團隊依據需求產出高品質廣告影片，經客戶確認後進行最終修訂。</p>
+    </div>
+    <div class="process-step">
+      <div class="process-num">03</div>
+      <div class="process-title">精準投放</div>
+      <p class="process-desc">設定目標受眾條件，跨平台同步上線，確保每一次曝光都觸及對的人。</p>
+    </div>
+    <div class="process-step">
+      <div class="process-num">04</div>
+      <div class="process-title">成效回報</div>
+      <p class="process-desc">定期提供完整數據報告，透明呈現曝光、點擊及轉換成效。</p>
+    </div>
+  </div>
+</section>
+
+<!-- Portfolio -->
+<section id="portfolio">
+  <span class="section-tag reveal">作品集 · Portfolio</span>
+  <h2 class="section-title reveal">我們的廣告作品</h2>
+  <div class="gold-divider reveal"></div>
+  <div class="portfolio-grid reveal">
+    <div class="portfolio-item">
+      <iframe src="https://www.youtube.com/embed/kABAIB_bYtM"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        style="width:100%;height:100%;position:absolute;top:0;left:0;">
+      </iframe>
+    </div>
+    <div class="portfolio-item">
+      <iframe src="https://www.youtube.com/embed/v9isGsUV5yE"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        style="width:100%;height:100%;position:absolute;top:0;left:0;">
+      </iframe>
+    </div>
+    <div class="portfolio-item">
+      <iframe src="https://www.youtube.com/embed/siFB_phXXgM"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        style="width:100%;height:100%;position:absolute;top:0;left:0;">
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section" id="contact">
+  <span class="section-tag reveal">立即開始 · Get Started</span>
+  <h2 class="section-title reveal">準備好讓品牌<br>躍上舞台了嗎？</h2>
+  <p class="cta-sub reveal">現在聯絡我們，獲取專屬廣告方案建議</p>
+  <div class="hero-cta reveal">
+    <a href="tel:048961867" class="btn-primary">📞 (04) 8961867</a>
+  </div>
+  <p style="margin-top:2rem;color:var(--muted);font-size:0.85rem;line-height:1.8;" class="reveal">
+    📍 彰化縣二林鎮新民街135號1樓（入口在永佳電器）
+  </p>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-brand">永佳創新｜Premium Advertising</div>
+  <div style="font-size:0.8rem;color:var(--muted);line-height:1.8;text-align:center;">
+    📍 彰化縣二林鎮新民街135號1樓（入口在永佳電器）<br>
+    📞 (04) 8961867
+  </div>
+  <div class="footer-copy">© 2026 永佳創新公司. All rights reserved.</div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
