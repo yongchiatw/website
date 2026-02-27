@@ -34,7 +34,7 @@
     content: '';
     position: fixed; inset: 0;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none; z-index: 9999;
+    pointer-events: none; z-index: 1;
     opacity: 0.6;
   }
 
@@ -50,14 +50,14 @@
   .nav-logo {
     font-family: 'Noto Serif TC', serif;
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 3.75rem;
     letter-spacing: 0.15em;
     color: var(--gold);
   }
 
   .nav-links {
     display: flex; gap: 2.5rem; list-style: none;
-    font-size: 0.8rem; letter-spacing: 0.12em; font-weight: 500;
+    font-size: 1.2rem; letter-spacing: 0.12em; font-weight: 500;
   }
 
   .nav-links a {
@@ -101,7 +101,7 @@
   }
 
   .hero-eyebrow {
-    font-size: 0.7rem;
+    font-size: 1.05rem;
     letter-spacing: 0.35em;
     color: var(--gold);
     text-transform: uppercase;
@@ -142,13 +142,14 @@
     display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
     opacity: 0;
     animation: fadeUp 0.8s ease 0.8s forwards;
+    position: relative; z-index: 10;
   }
 
   .btn-primary {
     background: var(--gold);
     color: var(--black);
-    padding: 0.9rem 2.4rem;
-    font-size: 0.85rem;
+    padding: 1.2rem 3rem;
+    font-size: 1.445rem;
     letter-spacing: 0.15em;
     font-weight: 700;
     border: none; cursor: pointer;
@@ -161,8 +162,8 @@
   .btn-secondary {
     background: transparent;
     color: var(--cream);
-    padding: 0.9rem 2.4rem;
-    font-size: 0.85rem;
+    padding: 1.2rem 3rem;
+    font-size: 1.445rem;
     letter-spacing: 0.15em;
     font-weight: 500;
     border: 1px solid rgba(255,255,255,0.2);
@@ -197,7 +198,7 @@
   }
 
   .stat-label {
-    font-size: 0.75rem;
+    font-size: 1.05rem;
     letter-spacing: 0.2em;
     color: var(--muted);
     text-transform: uppercase;
@@ -207,7 +208,7 @@
   section { padding: 7rem 4rem; max-width: 1200px; margin: 0 auto; }
 
   .section-tag {
-    font-size: 0.65rem; letter-spacing: 0.4em;
+    font-size: 1.1375rem; letter-spacing: 0.4em;
     color: var(--gold); text-transform: uppercase;
     margin-bottom: 1rem; display: block;
   }
@@ -223,37 +224,67 @@
   /* ── Service plan card ── */
   .plan-section { max-width: 1200px; }
 
+  .plan-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 0;
+  }
+
+  @media (max-width: 900px) {
+    .plan-grid { grid-template-columns: 1fr; }
+  }
+
   .plan-card {
     border: 1px solid var(--border);
-    padding: 4rem;
+    padding: 3.5rem;
     position: relative;
-    background: linear-gradient(135deg, rgba(201,168,76,0.04) 0%, transparent 60%);
-    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
-    align-items: center;
+    background: linear-gradient(135deg, rgba(201,168,76,0.05) 0%, transparent 60%);
+    display: flex; flex-direction: column; gap: 2rem;
     overflow: hidden;
+  }
+
+  .plan-card.featured {
+    border-color: var(--gold);
+    background: linear-gradient(135deg, rgba(201,168,76,0.08) 0%, transparent 60%);
+  }
+
+  .plan-badge {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--black);
+    font-size: 1.0725rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    padding: 0.3rem 0.9rem;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
   }
 
   .plan-card::before {
     content: '¥';
     position: absolute; right: -1rem; top: -2rem;
     font-family: 'Playfair Display', serif;
-    font-size: 18rem;
+    font-size: 14rem;
     color: rgba(201,168,76,0.04);
     font-weight: 700;
     line-height: 1;
     pointer-events: none;
+    z-index: 0;
   }
 
   .plan-price {
     font-family: 'Playfair Display', serif;
-    font-size: 5rem;
+    font-size: clamp(2.6rem, 4.5vw, 5rem);
     font-weight: 700;
     color: var(--gold);
-    line-height: 1;
+    line-height: 1.1;
+    white-space: nowrap;
+    position: relative; z-index: 1;
   }
 
   .plan-price span {
-    font-size: 1.2rem;
+    font-size: 1.65rem;
     font-family: 'DM Sans', sans-serif;
     color: var(--muted);
     font-weight: 300;
@@ -263,21 +294,23 @@
   }
 
   .plan-exposure {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     margin-top: 1rem;
     color: var(--cream);
     font-weight: 300;
+    position: relative; z-index: 1;
   }
   .plan-exposure strong { color: var(--gold-light); font-weight: 700; }
 
   .plan-features {
     list-style: none;
     display: flex; flex-direction: column; gap: 1.2rem;
+    position: relative; z-index: 1;
   }
 
   .plan-features li {
     display: flex; align-items: flex-start; gap: 1rem;
-    font-size: 0.95rem; color: rgba(249,245,238,0.8); line-height: 1.5;
+    font-size: 1.1rem; color: rgba(249,245,238,0.85); line-height: 1.6;
   }
 
   .plan-features li::before {
@@ -285,7 +318,7 @@
     color: var(--gold);
     font-size: 0.5rem;
     flex-shrink: 0;
-    margin-top: 0.45rem;
+    margin-top: 0.6rem;
   }
 
   /* ── Platforms grid ── */
@@ -314,7 +347,7 @@
   }
 
   .platform-name {
-    font-size: 0.8rem;
+    font-size: 1.2rem;
     letter-spacing: 0.15em;
     color: var(--muted);
     text-transform: uppercase;
@@ -346,14 +379,14 @@
 
   .process-title {
     font-family: 'Noto Serif TC', serif;
-    font-size: 1rem;
+    font-size: 1.5rem;
     font-weight: 700;
     margin-bottom: 0.75rem;
     color: var(--gold-light);
   }
 
   .process-desc {
-    font-size: 0.85rem;
+    font-size: 1.275rem;
     color: var(--muted);
     line-height: 1.7;
   }
@@ -369,11 +402,22 @@
     border-bottom: 1px solid var(--border);
   }
 
+  .cta-section .section-tag {
+    font-size: 0.975rem;
+  }
+
   .cta-section .section-title { font-size: clamp(2rem, 5vw, 4rem); }
 
   .cta-sub {
-    color: var(--muted); font-size: 1rem;
+    color: var(--muted); font-size: 1.5rem;
     margin-bottom: 2.5rem; font-weight: 300;
+  }
+
+  .cta-contact-info {
+    margin-top: 2rem;
+    color: var(--muted);
+    font-size: 1.275rem;
+    line-height: 2;
   }
 
   /* ── Portfolio placeholder ── */
@@ -446,12 +490,17 @@
     section { padding: 5rem 1.5rem; }
     .stats { grid-template-columns: 1fr; }
     .stat-item { border-right: none; border-bottom: 1px solid var(--border); }
-    .plan-card { grid-template-columns: 1fr; gap: 2rem; padding: 2rem; }
+    .plan-grid { grid-template-columns: 1fr; }
+    .plan-card { padding: 2rem; }
+    .plan-price { font-size: clamp(2rem, 7vw, 3rem); white-space: nowrap; }
+    .plan-features li { font-size: 1rem; }
     .platforms { grid-template-columns: repeat(2, 1fr); }
     .process-grid { grid-template-columns: repeat(2, 1fr); }
     .portfolio-grid { grid-template-columns: 1fr; }
     footer { flex-direction: column; text-align: center; }
     .cta-section { padding: 5rem 1.5rem; }
+    .cta-sub { font-size: 1.1rem; }
+    .cta-contact-info { font-size: 1rem; }
   }
 </style>
 </head>
@@ -506,27 +555,53 @@
 
 <!-- Plan Section -->
 <section class="plan-section">
-  <span class="section-tag reveal">核心方案 · Core Package</span>
-  <h2 class="section-title reveal">精美廣告一次搞定</h2>
+  <span class="section-tag reveal">廣告方案 · Packages</span>
+  <h2 class="section-title reveal">選擇最適合您的方案</h2>
   <div class="gold-divider reveal"></div>
 
-  <div class="plan-card reveal">
-    <div>
-      <div class="plan-price">
-        <span>方案費用</span>
-        NT$100,000
+  <div class="plan-grid">
+
+    <!-- 旗艦方案 -->
+    <div class="plan-card featured reveal">
+      <div>
+        <span class="plan-badge">旗艦方案 · Premium</span>
+        <div class="plan-price">
+          <span>方案費用</span>
+          NT$100,000
+        </div>
+        <p class="plan-exposure">
+          保證達成 <strong>10 萬次</strong> 真實曝光
+        </p>
       </div>
-      <p class="plan-exposure">
-        保證達成 <strong>10 萬次</strong> 真實曝光
-      </p>
+      <ul class="plan-features">
+        <li>由專業團隊根據客戶需求，量身製作高品質廣告影片</li>
+        <li>跨平台投放 YouTube、Gmail、Google 搜尋結果、各大 App</li>
+        <li>精準受眾設定，確保廣告觸及目標潛在客群</li>
+        <li>完整成效報告，透明呈現曝光數據與點擊數據</li>
+        <li>全程專案顧問服務，從創意發想到上線一條龍</li>
+      </ul>
     </div>
-    <ul class="plan-features">
-      <li>由專業團隊根據客戶需求，量身製作高品質廣告影片</li>
-      <li>跨平台投放 YouTube、Gmail、Google 搜尋結果、各大 App</li>
-      <li>精準受眾設定，確保廣告觸及目標潛在客群</li>
-      <li>完整成效報告，透明呈現曝光數據與點擊數據</li>
-      <li>全程專案顧問服務，從創意發想到上線一條龍</li>
-    </ul>
+
+    <!-- 輕量方案 -->
+    <div class="plan-card reveal">
+      <div>
+        <span class="plan-badge" style="background:var(--muted);color:var(--cream);">入門方案 · Starter</span>
+        <div class="plan-price">
+          <span>方案費用</span>
+          NT$10,000
+        </div>
+        <p class="plan-exposure">
+          保證達成 <strong>5,000 次</strong> 曝光
+        </p>
+      </div>
+      <ul class="plan-features">
+        <li>製作簡潔有力的短版廣告影片，快速傳遞品牌核心訊息</li>
+        <li>投放於 Google 合作平台，觸及潛在目標受眾</li>
+        <li>適合預算有限、希望快速試水溫的品牌或新創業者</li>
+        <li style="color:var(--muted);">＊ 不含數據追蹤、受眾分析及成效報告服務</li>
+      </ul>
+    </div>
+
   </div>
 </section>
 
@@ -534,7 +609,7 @@
 <section id="platform">
   <span class="section-tag reveal">投放管道 · Ad Platforms</span>
   <h2 class="section-title reveal">覆蓋 Google 全系列平台</h2>
-  <p style="color:var(--muted);font-weight:300;line-height:1.7;" class="reveal">
+  <p style="color:var(--muted);font-weight:300;line-height:1.7;font-size:1.5rem;" class="reveal">
     透過 Google 廣告生態系，您的品牌將同步出現在使用者日常接觸的每個數位接觸點。
   </p>
   <div class="platforms reveal">
@@ -626,7 +701,7 @@
   <div class="hero-cta reveal">
     <a href="tel:048961867" class="btn-primary">📞 (04) 8961867</a>
   </div>
-  <p style="margin-top:2rem;color:var(--muted);font-size:0.85rem;line-height:1.8;" class="reveal">
+  <p class="cta-contact-info reveal">
     📍 彰化縣二林鎮新民街135號1樓（入口在永佳電器）
   </p>
 </div>
